@@ -10,7 +10,6 @@ import com.example.security.service.ITransactionService;
 import com.example.security.util.AesUtil;
 import com.example.security.util.RsaUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

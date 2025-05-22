@@ -1,0 +1,35 @@
+<configuration>
+    <property name="LOG_PATH" value="logs" />
+    <property name="APP_LOG_NAME" value="${LOG_PATH}/app-log" />
+
+    <!-- Appender ghi tất cả log vào một file theo ngày -->
+    <appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Ghi log hiện tại -->
+        <file>${APP_LOG_NAME}.log</file>
+
+        <!-- Chính sách rolling theo ngày -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Tên file log theo ngày -->
+            <fileNamePattern>${APP_LOG_NAME}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- Giữ lại 30 ngày -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Console log -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Gắn appender vào root logger -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="APP_FILE" />
+    </root>
+</configuration>

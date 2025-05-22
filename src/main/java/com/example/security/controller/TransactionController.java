@@ -55,6 +55,29 @@ public class TransactionController {
      *
      * @return the public key as a string
      */
+
+    /**
+     * Receives encrypted transaction information, decodes it, and forwards the request to the transaction creation endpoint.
+     *
+     * @param transactionDecodeRequest the encrypted transaction request data
+     * @return ApiResponse containing the result of the transaction creation
+     * @throws NoSuchAlgorithmException if the cryptographic algorithm is not available
+     * @throws InvalidKeySpecException if the key specifications are invalid
+     * @throws NoSuchPaddingException if the padding mechanism is not available
+     * @throws IllegalBlockSizeException if the block size is illegal for the used algorithm
+     * @throws BadPaddingException if the padding is incorrect
+     * @throws InvalidKeyException if the key is invalid
+     */
+    @Operation(
+            summary = "Process Encrypted Transaction Information",
+            description = "Decodes encrypted transaction data and forwards it to the transaction creation service"
+    )
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Successfully processed the transaction information",
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid or malformed encrypted data"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Internal server error during decryption or processing")
+    })
     @PostMapping("/info")
     public ResponseEntity<Object> receiveInfo(@Valid @RequestBody TransactionDecodeRequest transactionDecodeRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         ListTransactionRequest listTransactionRequest = transactionService.createListRequest(transactionDecodeRequest);
