@@ -1,8 +1,7 @@
 package com.example.security.service;
 
 import com.example.security.dto.request.ListTransactionRequest;
-import com.example.security.dto.request.TransactionDecodeRequest;
-import com.example.security.dto.request.TransactionRequest;
+import com.example.security.dto.request.TransactionUserRequest;
 import com.example.security.dto.response.TransactionResponse;
 
 import javax.crypto.BadPaddingException;
@@ -22,12 +21,12 @@ public interface ITransactionService {
     /**
      * Prepare the parameters for creating a transaction.
      *
-     * @param transactionDecodeRequest the transaction decode request data
+     * @param transactionUserRequest the transaction decode request data
      * @return the list transaction request with prepared parameters
      * @throws NoSuchAlgorithmException if the algorithm is not available
      * @throws InvalidKeySpecException if the key specification is invalid
      */
-    ListTransactionRequest createListRequest(TransactionDecodeRequest transactionDecodeRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException;
+    ListTransactionRequest createListRequest(TransactionUserRequest transactionUserRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException;
 
     /**
      * Create and save two transaction records (sender and receiver) and return their responses.

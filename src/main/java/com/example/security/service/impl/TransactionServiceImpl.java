@@ -1,8 +1,8 @@
 package com.example.security.service.impl;
 
 import com.example.security.dto.request.ListTransactionRequest;
-import com.example.security.dto.request.TransactionDecodeRequest;
 import com.example.security.dto.request.TransactionRequest;
+import com.example.security.dto.request.TransactionUserRequest;
 import com.example.security.dto.response.TransactionResponse;
 import com.example.security.enity.Transaction;
 import com.example.security.repository.TransactionRepository;
@@ -47,29 +47,29 @@ public class TransactionServiceImpl implements ITransactionService {
     /**
      * Prepare the parameters for creating a transaction.
      *
-     * @param transactionDecodeRequest the transaction decode request data
+     * @param transactionUserRequest the transaction decode request data
      * @return the list transaction request with prepared parameters
      * @throws NoSuchAlgorithmException if the algorithm is not available
      * @throws InvalidKeySpecException   if the key specification is invalid
      */
     @Override
-    public ListTransactionRequest createListRequest(TransactionDecodeRequest transactionDecodeRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+    public ListTransactionRequest createListRequest(TransactionUserRequest transactionUserRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         List<TransactionRequest> transactionRequests = new ArrayList<>();
         PublicKey publicKey = RsaUtil.stringToPublicKey(publicKeyString);
         String timeNow = LocalDateTime.now().toString();
         TransactionRequest sendTransaction = new TransactionRequest();
         sendTransaction.setTransactionID(RsaUtil.encrypt(String.valueOf(UUID.randomUUID()), publicKey));
-        sendTransaction.setAccount(RsaUtil.encrypt(transactionDecodeRequest.getAccountSender(), publicKey));
-        sendTransaction.setInDebt(RsaUtil.encrypt(transactionDecodeRequest.getTransferAmount().toPlainString(), publicKey));
+        sendTransaction.setAccount(RsaUtil.encrypt(transactionUserRequest.getAccountSender(), publicKey));
+        sendTransaction.setInDebt(RsaUtil.encrypt(transactionUserRequest.getTransferAmount().toPlainString(), publicKey));
         sendTransaction.setHave(RsaUtil.encrypt(BigDecimal.ZERO.toPlainString(), publicKey));
         sendTransaction.setTime(RsaUtil.encrypt(timeNow, publicKey));
         transactionRequests.add(sendTransaction);
 
         TransactionRequest receiveTransaction = new TransactionRequest();
         receiveTransaction.setTransactionID(RsaUtil.encrypt(String.valueOf(UUID.randomUUID()), publicKey));
-        receiveTransaction.setAccount(RsaUtil.encrypt(transactionDecodeRequest.getAccountSender(), publicKey));
+        receiveTransaction.setAccount(RsaUtil.encrypt(transactionUserRequest.getAccountSender(), publicKey));
         receiveTransaction.setInDebt(RsaUtil.encrypt(BigDecimal.ZERO.toPlainString(), publicKey));
-        receiveTransaction.setHave(RsaUtil.encrypt(transactionDecodeRequest.getTransferAmount().toPlainString(), publicKey));
+        receiveTransaction.setHave(RsaUtil.encrypt(transactionUserRequest.getTransferAmount().toPlainString(), publicKey));
         receiveTransaction.setTime(RsaUtil.encrypt(timeNow, publicKey));
         transactionRequests.add(receiveTransaction);
         return  new ListTransactionRequest(transactionRequests);

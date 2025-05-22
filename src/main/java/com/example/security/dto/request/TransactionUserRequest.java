@@ -8,7 +8,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class TransactionDecodeRequest {
+public class TransactionUserRequest {
     @NotBlank(message = "AccountSender is required")
     private String accountSender;
 

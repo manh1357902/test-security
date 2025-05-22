@@ -2,7 +2,7 @@ package com.example.security.controller;
 
 import com.example.security.constant.Constant;
 import com.example.security.dto.request.ListTransactionRequest;
-import com.example.security.dto.request.TransactionDecodeRequest;
+import com.example.security.dto.request.TransactionUserRequest;
 import com.example.security.dto.response.ApiResponse;
 import com.example.security.dto.response.TransactionResponse;
 import com.example.security.service.ITransactionService;
@@ -59,7 +59,7 @@ public class TransactionController {
     /**
      * Receives encrypted transaction information, decodes it, and forwards the request to the transaction creation endpoint.
      *
-     * @param transactionDecodeRequest the encrypted transaction request data
+     * @param transactionUserRequest the encrypted transaction request data
      * @return ApiResponse containing the result of the transaction creation
      * @throws NoSuchAlgorithmException if the cryptographic algorithm is not available
      * @throws InvalidKeySpecException if the key specifications are invalid
@@ -79,8 +79,8 @@ public class TransactionController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Internal server error during decryption or processing")
     })
     @PostMapping("/info")
-    public ResponseEntity<Object> receiveInfo(@Valid @RequestBody TransactionDecodeRequest transactionDecodeRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        ListTransactionRequest listTransactionRequest = transactionService.createListRequest(transactionDecodeRequest);
+    public ResponseEntity<Object> receiveInfo(@Valid @RequestBody TransactionUserRequest transactionUserRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+        ListTransactionRequest listTransactionRequest = transactionService.createListRequest(transactionUserRequest);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
